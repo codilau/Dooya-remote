@@ -1,6 +1,6 @@
 /*
   RCSwitch - Arduino libary for remote control outlet switches
-  Copyright (c) 2011 Suat �zg�r.  All right reserved.
+  Copyright (c) 2011 Suat Özgür.  All right reserved.
   
   Contributors:
   - Andre Koehler / info(at)tomate-online(dot)de
@@ -54,7 +54,7 @@ void RCSwitch::setProtocol(int nProtocol) {
   else if (nProtocol == 2) {
 	  this->setPulseLength(650);
   }
-  //edit: Protokoll 4 für Rolladen mit Pulslänge 250ms und 4 Wiederholungen
+  //edit: Protokoll 4 fÃ¼r Rolladen mit PulslÃ¤nge 250ms und 4 Wiederholungen
   else if (nProtocol == 4) {
     this->setPulseLength(250);
     this->setRepeatTransmit(20);
@@ -198,7 +198,7 @@ char* RCSwitch::getCodeWordB(int nAddressCode, int nChannelCode, boolean bStatus
    
    char* code[5] = { "FFFF", "0FFF", "F0FF", "FF0F", "FFF0" };
    if (nAddressCode < 1 || nAddressCode > 4 || nChannelCode < 1 || nChannelCode > 4) {
-    return '\0';
+    return NULL;
    }
    for (int i = 0; i<4; i++) {
      sReturn[nReturnPos++] = code[nAddressCode][i];
@@ -234,7 +234,7 @@ char* RCSwitch::getCodeWordA(char* sGroup, int nChannelCode, boolean bStatus) {
   char* code[6] = { "FFFFF", "0FFFF", "F0FFF", "FF0FF", "FFF0F", "FFFF0" };
 
   if (nChannelCode < 1 || nChannelCode > 5) {
-      return '\0';
+      return NULL;
   }
   
   for (int i = 0; i<5; i++) {
@@ -271,7 +271,7 @@ char* RCSwitch::getCodeWordC(char sFamily, int nGroup, int nDevice, boolean bSta
   int nReturnPos = 0;
   
   if ( (byte)sFamily < 97 || (byte)sFamily > 112 || nGroup < 1 || nGroup > 4 || nDevice < 1 || nDevice > 4) {
-    return '\0';
+    return NULL;
   }
   
   char* sDeviceGroupCode =  dec2binWzerofill(  (nDevice-1) + (nGroup-1)*4, 4  );
@@ -319,10 +319,10 @@ void RCSwitch::sendTriState(char* sCodeWord) {
   }
 }
 
-//edit: Quad-State-Befehl mit zusätzl. Q senden
+//edit: Quad-State-Befehl mit zusÃ¤tzl. Q senden
 void RCSwitch::sendQuadState(char* sCodeWord) {
   for (int nRepeat=0; nRepeat<nRepeatTransmit; nRepeat++) {
-    //Syn-Bit wird hier VOR Übertragung gesendet!
+    //Syn-Bit wird hier VOR Ãbertragung gesendet!
  this->sendSync(); 
  int i = 0;
     while (sCodeWord[i] != '\0') {
@@ -473,7 +473,7 @@ void RCSwitch::sendSync() {
 	else if (this->nProtocol == 2) {
 		this->transmit(1,10);
 	}
-	//edit: Syn-Bit für Rolladen
+	//edit: Syn-Bit fÃ¼r Rolladen
     	else if (this->nProtocol == 4) {
         	this->transmit(18,6);
     	}
